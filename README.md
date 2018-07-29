@@ -16,13 +16,13 @@ The file launcher.js launches a number of services, including
 	* require: here, a server describes all services that it needs.  
 		For each required service, the requestor will receive a /fulfill message describing  
 		a provider (either immediately or as soon as the service is 'provided')
-IDManager: a service persisting user names and hashed passwords
-	verify: check if the offered credentials are bona fide
-AccessManager: a service which checks access rights/roles
-	verify: checks if a user has the required right/role
-	
-
-
+* IDManager: a service persisting user names and hashed passwords
+	* verify: check if the offered credentials are bona fide
+* AccessManager: a service which checks access rights/roles
+	* verify: checks if a user has the required right/role
+* Login: allows users to log in on HTML pages
+	* keyexchange: create secure communication (shared secret)
+	* login: secure login
 
 ## Getting Started
 
@@ -36,63 +36,15 @@ e.g. download Win msi, Mac pkg or tarball
 
 ### Installing
 
-A step by step series of examples that tell you how to get a development env running
+Step one: start the generic server by `node genericServer.js` (if your `node` is called `node`
+Step two: execute launcher by `node launcher.js`
+Step three: visit `jsoneditor.html` and press `login`
 
-Say what the step will be
-
-```
-Give the example
-```
-
-And repeat
-
-```
-until finished
-```
-
-End with an example of getting some data out of the system or using it for a little demo
-
-## Running the tests
-
-Explain how to run the automated tests for this system
-
-### Break down into end to end tests
-
-Explain what these tests test and why
-
-```
-Give an example
-```
-
-### And coding style tests
-
-Explain what these tests test and why
-
-```
-Give an example
-```
-
-## Deployment
-
-Add additional notes about how to deploy this on a live system
-
-## Built With
-
-* [Dropwizard](http://www.dropwizard.io/1.0.2/docs/) - The web framework used
-* [Maven](https://maven.apache.org/) - Dependency Management
-* [ROME](https://rometools.github.io/rome/) - Used to generate RSS Feeds
-
-## Contributing
-
-Please read [CONTRIBUTING.md](https://gist.github.com/PurpleBooth/b24679402957c63ec426) for details on our code of conduct, and the process for submitting pull requests to us.
-
-## Versioning
-
-We use [SemVer](http://semver.org/) for versioning. For the versions available, see the [tags on this repository](https://github.com/your/project/tags). 
+(currently jsoneditor has dummy data and doesn't do much
 
 ## Authors
 
-* **Billie Thompson** - *Initial work* - [PurpleBooth](https://github.com/PurpleBooth)
+* **Pum Walters** - *Initial work* - [PurpleBooth](https://github.com/PurpleBooth)
 
 See also the list of [contributors](https://github.com/your/project/contributors) who participated in this project.
 
