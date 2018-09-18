@@ -90,6 +90,7 @@ $ sudo docker run hello-world
 ## Authors
 
 * **Pum Walters** - *Initial work* - [PurpleBooth](https://github.com/PurpleBooth)
+* **Maricio Jongma** - *Dockerizing and setup fixes* - [CSI_Fork_MackyNous](https://github.com/MackyNous/CSI)
 
 See also the list of [contributors](https://github.com/your/project/contributors) who participated in this project.
 
