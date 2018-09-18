@@ -24,7 +24,7 @@ The file launcher.js launches a number of services, including
 	* keyexchange: create secure communication (shared secret)
 	* login: secure login
 
-## Getting Started
+## Getting Started [local]
 
 See generic info on cloning a github repo
 
@@ -41,6 +41,51 @@ Step two: execute launcher by `node launcher.js`
 Step three: visit `jsoneditor.html` and press `login`
 
 (currently jsoneditor has dummy data and doesn't do much
+
+## Getting Started [Docker]
+
+First we need to install docker to run everything:
+
+For Debian based systems:
+```zsh
+sudo apt install docker
+
+# Start docker
+sudo systemctl start docker
+
+# Test if docker works correctly
+sudo docker run hello-world
+```
+
+For Arch based systems:
+```zsh
+sudo pacman -Syu
+sudo pacman -S docker
+
+# Start docker
+sudo systemctl start docker
+
+# Test if docker works correctly
+sudo docker run hello-world
+```
+
+For centOS based systems: 
+```zsh
+$ sudo yum install -y yum-utils \
+  device-mapper-persistent-data \
+  lvm2
+  
+$ sudo yum-config-manager \
+    --add-repo \
+    https://download.docker.com/linux/centos/docker-ce.repo
+    
+$ sudo yum install docker-ce
+
+$ sudo systemctl start docker
+
+# Test if docker works
+$ sudo docker run hello-world
+```
 
 ## Authors
 
