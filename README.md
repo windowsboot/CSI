@@ -130,7 +130,7 @@ never be used in a production environment.
 
 ### Messages
 
-```
+```js
 jsoneditor
 	#login:
 		=> keyexchange(sessionID, pubsecr, halfsecr)
