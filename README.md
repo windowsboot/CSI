@@ -1,4 +1,4 @@
-# Cybersecurity Services Infrastructure (CSI)
+# Cybersecurity Services Infrastructure (CSI) [![Build Status](https://travis-ci.org/MackyNous/CSI.svg?branch=master)](https://travis-ci.org/MackyNous/CSI)
 
 CSI is a distributed (service-oriented) infrastructure ***intended solely for 
 educational purposes*** (and should never be used in a production environment).
@@ -24,25 +24,33 @@ The file launcher.js launches a number of services, including
 	* keyexchange: create secure communication (shared secret)
 	* login: secure login
 
-## Getting Started [local]
+## Getting Started [local] ![node (tag)](https://img.shields.io/node/v/passport/latest.svg) 
 
 See generic info on cloning a github repo
 
-### Prerequisites
+### Prerequisites 
 
 Recent node.js, see [nodejs.org](https://nodejs.org/en/)
 
 e.g. download Win msi, Mac pkg or tarball
 
+#### modules
+[![NPM](https://nodei.co/npm/hapi.png?compact=true)](https://nodei.co/npm/hapi/) [![NPM](https://nodei.co/npm/request-promise.png?compact=true)](https://nodei.co/npm/request-promise/) [![NPM](https://nodei.co/npm/request.png?compact=true)](https://nodei.co/npm/request/)
+
+
 ### Installing
 
-Step one: start the generic server by `node genericServer.js` (if your `node` is called `node`
-Step two: execute launcher by `node launcher.js`
-Step three: visit `jsoneditor.html` and press `login`
+install npm and run the script (debian as an example): 
+```zsh
+$ sudo apt install npm
+$ npm install 
+$ npm start
+```
+Last step is to visit `jsoneditor.html` and press `login`
 
 (currently jsoneditor has dummy data and doesn't do much
 
-## Getting Started [Docker]
+## Getting Started [Docker] ![Docker Automated build](https://img.shields.io/docker/automated/jrottenberg/ffmpeg.svg) 
 
 First we need to install docker to run everything:
 
@@ -94,38 +102,22 @@ $ sudo docker run hello-world
 
 See also the list of [contributors](https://github.com/your/project/contributors) who participated in this project.
 
-## License
+## License [![MIT license](http://img.shields.io/badge/license-MIT-brightgreen.svg)](http://opensource.org/licenses/MIT)
 
 This project is licensed under the MIT License.  
 Copyright (c) 2018 Pum Walters, HvA
 
-Permission is hereby granted, free of charge, to any person obtaining a copy
-of this software and associated documentation files (the "Software"), to deal
-in the Software without restriction, including without limitation the rights
-to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
-copies of the Software, and to permit persons to whom the Software is
-furnished to do so, subject to the following conditions:
-
-The above copyright notice and this permission notice shall be included in all
-copies or substantial portions of the Software.
-
-THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
-IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
-FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
-AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
-LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
-OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
-SOFTWARE.
-
-This software is created for educational purposes and should 
-never be used in a production environment.
+To see the full licence see the file calles: 'LICENSE' 
 
 
-## Acknowledgments
+## Acknowledgements
 
-* Hat tip to anyone whose code was used
-* Inspiration
-* etc
+### Professors
+
+* Pum Walters
+* James Watson
+
+### Students
 
 ## Technotes
 
