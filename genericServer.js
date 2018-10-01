@@ -55,6 +55,13 @@ var Hapi = require('hapi'),
 	nocrypto = require("./nocrypto.js"),
 	notesto = require("./notesto.js");
 
+var R = {};
+global.R = R;
+fs = require('fs');
+R.logger = fs.createWriteStream('IDSlog.txt', {'flags': 'a'});
+
+// 
+
 var server = new Hapi.Server({
     port: 9999,
     host: '0.0.0.0',

@@ -42,6 +42,8 @@ AccessManager: a service which checks access rights
 
 var Hapi = require('hapi'),
 	nt = require("./notesto.js");
+var fs = require('fs');
+var logger = fs.createWriteStream('log.txt', {'flags': 'a'});
 (function(nt){
 
 	//$.DELETE('localhost:9999/reset');
@@ -105,8 +107,11 @@ var Hapi = require('hapi'),
 				$.xPOSTjson('localhost:10000/provide',{puk:$.keys.puk, pwhashkey:$.pwhashkey, 
 					port:$.port, srvc:'idmngr'})
 				$.users={
-					root:$.chash('secretPassword1',$.pwhashkey)
+					root:$.chash('secretPassword1',$.pwhashkey),
+					admin:$.chash('secretPassword2',$.pwhashkey),
+					IDS:$.chash('IDS',$.pwhashkey)
 				}
+
 			},
 			POST: {
 				"verify/{unm}": ($) => { $.trace(1,'IDManager$verify/{unm}:1')
@@ -127,7 +132,9 @@ var Hapi = require('hapi'),
 				$.keys=$.ppks();
 				$.xPOSTjson('localhost:10000/provide',{puk:$.keys.puk, port:$.port, srvc:'accessmngr'})
 				$.rights={
-					root:['login','appstore']
+					root:['login','appstore'],
+					admin:['login'],
+					IDS:['IDS']
 				}
 			},
 			POST: {
@@ -136,6 +143,33 @@ var Hapi = require('hapi'),
 						info = $.BODY,
 						right = info.right;
 					return $.rights.hasOwnProperty(unm) && $.rights[unm].includes(right) ? 'OK' : 'KO';
+				}
+			},
+		}`)
+	.then(nt.expect(/^SubServer.*$/,'Start a Subserver'))
+	
+	nt.xPOSTjson('localhost:9999/create',
+		`{	name: 'IDS',
+			port: 10004,
+			version: 1,
+			init: () => { $.trace(1,'IDS$init:1')
+				$.keys=$.ppks();
+				$.xPOSTjson('localhost:10000/provide',{puk:$.keys.puk, port:$.port, srvc:'IDS'});
+			},
+			POST: {
+				"log/{info}": async ($) => {   $.trace(1,'IDS$log/{info}:1')
+					console.log('recieved');
+					var entry = $.PATH.info;
+					var login = $.PARAM.login;
+					var ip = $.PARAM.ip;
+					var date = new Date();
+					if (login == "pass") var log = (date+" | User "+entry+" Logged in | from IP: "+ip+"\\n");
+					else if (login == "noRights") var log = (date+" | User "+entry+" failed attempt to login, no rights | From IP: "+ip+"\\n");
+					else if (login == "mismatch") var log = (date+" | User "+entry+" failed attempt to login, password mismatch | From IP: "+ip+"\\n");
+					else var log = ("User "+entry+ "Tried to login, login status: unknown | From IP: "+ip+"\\n");
+					console.log(log);
+					R.logger.write(log);
+					return 'OK';
 				}
 			},
 		}`)
@@ -149,7 +183,7 @@ var Hapi = require('hapi'),
 				$.sessions={}
 				console.log('login$a: 1'),
 				$.xPOSTjson('localhost:10000/provide',{port:$.port, srvc:'login'})
-				$.xPOSTjson('localhost:10000/require',{port:$.port, srvcs:['idmngr','accessmngr']})
+				$.xPOSTjson('localhost:10000/require',{port:$.port, srvcs:['idmngr','accessmngr','IDS']})
 			},
 			POST: {
 				fulfil: ($) => { $.trace(1,'Login$fulfil:1')
@@ -172,6 +206,7 @@ var Hapi = require('hapi'),
 			},
 			POSTS: {
 				"login/{sid}": async ($) => {   $.trace(1,'Login$login/{sid}:1')
+					var reqIp = $.REQUEST.info.remoteAddress;
 					var sid = $.PATH.sid,
 						sess = $.sessions[sid],
 						info = JSON.parse($.decrypt($.BODY.toString('utf8'),sess.sharedSecret)),
@@ -183,18 +218,27 @@ var Hapi = require('hapi'),
 						idOK = await $.xPOSTjson(idmngr.ip+':'+idmngr.port+'/verify/'+sess.username,
 								ncode(JSON.stringify({pwh:pwhash}),idmngr.puk)),
 						accessmngr = $.accessmngr,
+						IDS = $.IDS,
 						accsOK = await $.xPOSTjson(accessmngr.ip+':'+accessmngr.port+'/verify/'+sess.username,
 								'login')
 						
-					return idOK==='KO'?
-						{error:'unamePasswordMismatch'}:
-							accsOK==='OK'?
-								{error:'noLoginRights'}:
-								{sessionToken:sess.sessionToken}
+						if (idOK == 'KO'){
+							$.xPOSTjson(IDS.ip+':'+IDS.port+'/log/'+sess.username+'?login=mismatch&ip='+reqIp);
+							return {error:'unamePasswordMismatch'};
+						} 
+						if (accsOK == 'OK'){
+							$.xPOSTjson(IDS.ip+':'+IDS.port+'/log/'+sess.username+'?login=noRights&ip='+reqIp);
+							return {error:'noLoginRights'};
+						} 
+						{
+							$.xPOSTjson(IDS.ip+':'+IDS.port+'/log/'+sess.username+'?login=pass&ip='+reqIp);
+							return {sessionToken:sess.sessionToken};
+						}
 				}
 			},
 		}`)
-	.then(nt.expect(/^SubServer.*$/,'Start a Subserver'))
+	
+
 
 
 	
