@@ -19,27 +19,27 @@ LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
 OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 SOFTWARE.
 
-This software is created for educational purposes and should 
+This software is created for educational purposes and should
 never be used in a production environment
 
-This is a REST server that listens to port 10101 and accepts server specifications, which 
+This is a REST server that listens to port 10101 and accepts server specifications, which
 are then executed to start what we call **subservers**
 
-IMPORTANT NOTE: this server accepts and executes executable JavaScipt code. That approach 
-is suitable in our context of education, but should never be used in a production 
+IMPORTANT NOTE: this server accepts and executes executable JavaScipt code. That approach
+is suitable in our context of education, but should never be used in a production
 environment.
 
-This code imports the 'notesto' library and extends that object with several 
-convenience functions. The code which defines a server is interpreted in a 
+This code imports the 'notesto' library and extends that object with several
+convenience functions. The code which defines a server is interpreted in a
 context where $ signifies that object.
-	  
-* POST /create accepts a JSON object which specifies a server. 
+
+* POST /create accepts a JSON object which specifies a server.
 	* name, version: its name and version
 	* port: the port it listens to
 	* init: a function called when the subserver is started, for instance to initialise
 	  variables in the $ object
-	* GET: and object containing all HTTP GET handlers (which this server accepts) for 
-	  each key-value the key is the HTTP endpoint and the value is the text of a function 
+	* GET: and object containing all HTTP GET handlers (which this server accepts) for
+	  each key-value the key is the HTTP endpoint and the value is the text of a function
 	  which returns the response
 	* POST, PUT, PATCH, DELETE: similarly for those verbs
 	* POSTS: a pseudo-verb in which the body isn't parsed to allow for encrypted data
@@ -55,17 +55,16 @@ var Hapi = require('hapi'),
 	nocrypto = require("./nocrypto.js"),
 	notesto = require("./notesto.js");
 
-var R = {};
-global.R = R;
-fs = require('fs');
-R.logger = fs.createWriteStream('IDSlog.txt', {'flags': 'a'});
+	var jsn = {};
+	global.jsn = jsn;
+	jsn.loadJsonFile = require('load-json-file');
+	const init = async () => {
 
-// 
 
 var server = new Hapi.Server({
     port: 9999,
     host: '0.0.0.0',
-    routes:{ 
+    routes:{
       cors: {
             origin: ['*'],
             additionalHeaders: ['cache-control', 'x-requested-with']
@@ -86,6 +85,12 @@ mkObject$ = (obj) => {
 			path: '/',
 			handler: function(request, reply) {
 				return servers;
+			}
+		},
+		{	method: 'GETtest',
+			path: '/',
+			handler: (request, h) => {
+				return 'hoi';
 			}
 		},
 		{
@@ -113,7 +118,7 @@ mkObject$ = (obj) => {
 				$.server = new Hapi.Server({
 					port: $.port,
 					host: '0.0.0.0',
-					routes:{ 
+					routes:{
 					  cors: {
 							origin: ['*'],
 							additionalHeaders: ['cache-control', 'x-requested-with']
@@ -126,8 +131,8 @@ mkObject$ = (obj) => {
 								method: i,
 								path: '/'+k,
 								handler: function(request, reply) { $.trace(2,'Generic$Generic:2')
-									$.BODY = request.payload; 
-									$.PARAM = request.query; 
+									$.BODY = request.payload;
+									$.PARAM = request.query;
 									$.PATH = request.params;
 									$.REQUEST = request;
 									return v($) || 'null';
@@ -171,7 +176,7 @@ mkObject$ = (obj) => {
 	}]);
 }());
 
-const init = async () => {
+
     await server.start();
     console.log(`Server running at: ${server.info.uri}`);
 };
