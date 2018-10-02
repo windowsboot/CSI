@@ -99,6 +99,7 @@ $ sudo docker run hello-world
 
 * **Pum Walters** - *Initial work* - [PurpleBooth](https://github.com/PurpleBooth)
 * **Maricio Jongma** - *Dockerizing and setup fixes* - [CSI_Fork_MackyNous](https://github.com/MackyNous/CSI)
+* **Talha Ucar** - *Inventory Management System module + front-end for login* - [CSI Fork windowsboot](https://github.com/windowsboot/CSI)
 
 See also the list of [contributors](https://github.com/MackyNous/CSI/graphs/contributors) who participated in this project.
 
