@@ -114,6 +114,8 @@ $ sudo node database.js
 
 ```
 
+Last step is to visit http://127.0.0.1/login and try to login with root & secretPassword1
+
 
 
 
