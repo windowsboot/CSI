@@ -97,16 +97,20 @@ $ sudo docker run hello-world
 ## Inventory Management System
 Team VT03 has made beginning for a Inventory Management System. If you want to use this functionaliy you can follow these instructions:
 
+First, move the content of the front-end folder and a copy of nocrypto.js into /var/www/html
 
 Start apache2 service:
 ```zsh
-(Move the front-end folders into /var/www/html first)
-
 $ sudo service apache2 start
-
 ```
 
+Install some extra dependencies (if not present) inside the CSI folder 
 
+```zsh
+$ sudo npm install inert
+$ sudo npm install load-json-file
+
+```
 Start genericServer.js and database.js:
 ```zsh
 $ sudo node genericServer.js
